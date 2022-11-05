@@ -1,0 +1,1 @@
+DROP TYPE diary.jwt;

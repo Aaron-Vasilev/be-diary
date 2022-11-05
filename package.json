@@ -1,0 +1,32 @@
+{
+  "name": "diary",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "dev": "nodemon --exec ts-node src/index.ts",
+    "start": "ts-node src/index.ts",
+    "test": "jest"
+  },
+  "author": "Aaron Vasilev <oigen711@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "@fastify/postgres": "^5.1.0",
+    "@fastify/type-provider-typebox": "^2.3.0",
+    "@sinclair/typebox": "^0.24.1",
+    "fastify": "^4.9.2",
+    "jest": "^29.2.2",
+    "pg": "^8.8.0"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "^2.13.7",
+    "@types/jest": "^29.2.0",
+    "@types/node": "^18.8.3",
+    "@types/pg": "^8.6.5",
+    "db-migrate-pg": "^1.2.2",
+    "nodemon": "^2.0.20",
+    "ts-jest": "^29.0.3",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.8.4"
+  }
+}
