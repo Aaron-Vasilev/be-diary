@@ -3,9 +3,9 @@ import { FastifyPluginAsyncTypebox, TypeBoxTypeProvider } from '@fastify/type-pr
 import { Static, Type } from '@sinclair/typebox'
 
 const Question = Type.Partial(Type.Object({ 
+  id: Type.Number(),
   shown_date: Type.String(),
   text: Type.String(),
-  id: Type.Number(),
 }))
 
 type QuestionType = Static<typeof Question>

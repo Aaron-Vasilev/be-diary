@@ -1,1 +1,0 @@
-DROP FUNCTION diary.register_user (VARCHAR(48), text, text);

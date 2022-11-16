@@ -10,13 +10,14 @@ const Note = Type.Partial(Type.Object({
 }))
 
 type NoteType = Static<typeof Note>
-type NoteCreatedAtReq = Pick<NoteType, "question_id">
+type GetNotesBody = Pick<NoteType, "question_id">
+type PostNoteBody = Pick<NoteType, "text" | "created_at" | "question_id">
 
 const RegisterNoteRoute: FastifyPluginAsyncTypebox = async (fastify: FastifyInstance, options: FastifyPluginOptions) => {
   const server = fastify.withTypeProvider<TypeBoxTypeProvider>()
 
-  server.post<{ Body: NoteCreatedAtReq, Reply: NoteType[] }>(
-    '/note',
+  server.post<{ Body: GetNotesBody, Reply: NoteType[] }>(
+    '/getnotes',
     {
       schema: {
         body: Note ,
@@ -37,11 +38,33 @@ const RegisterNoteRoute: FastifyPluginAsyncTypebox = async (fastify: FastifyInst
     }
   )
 
+  server.post<{ Body: PostNoteBody, Reply: NoteType[] }>(
+    '/postnote',
+    {
+      schema: {
+        body: Note ,
+        response: {
+          201: Note,
+        },
+      },
+    },
+    (request, reply) => {
+      server.pg.query(
+        `INSERT into diary.note (text, created_date, question_id) VALUES
+        	($1, $2, $3) RETURNING *;`, 
+          [request.body.text, request.body.created_at, request.body.question_id],
+        function onResult(err, result) {
+          if (err)
+            console.log(err)
+          return reply.send(result.rows)
+        }
+      )
+    }
+  )
+
 
 }
 
 export { 
   RegisterNoteRoute 
 }
-//npm uninstall type-graphql sequelize reflect-metadata postgraphile pg-hstore graphql 
-//    class-validator @graphile-contrib/pg-simplify-inflector --force

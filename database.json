@@ -1,0 +1,10 @@
+{
+  "dev": {
+    "driver": "pg",
+    "host": "localhost",
+    "database": "db_diary",
+    "port": "5432",
+    "schema": "diary"
+  },
+  "sql-file": true
+}
