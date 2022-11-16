@@ -49,7 +49,6 @@ const RegisterAuthRoute: FastifyPluginAsyncTypebox = async (fastify: FastifyInst
           "SELECT * FROM private.user_account WHERE email=$1 LIMIT 1;", [email]
         )
 
-        console.log('†', rows)
         db_hash.iv = rows[0].iv
         db_hash.password_hash = rows[0].password_hash
         response.user_id = rows[0].id
