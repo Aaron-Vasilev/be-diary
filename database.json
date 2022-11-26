@@ -4,7 +4,8 @@
     "host": "localhost",
     "database": "db_diary",
     "port": "5432",
-    "schema": "diary"
+    "schema": "diary",
+    "user": "postgres"
   },
   "sql-file": true
 }

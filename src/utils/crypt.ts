@@ -3,7 +3,7 @@ import dotenv from "dotenv"
 
 export interface Hash {
   iv: string
-  password_hash: string
+  passwordHash: string
 }
 
 dotenv.config()
@@ -18,14 +18,14 @@ export function encrypt(text: string): Hash {
 
   return {
     iv: iv.toString('hex'),
-    password_hash: encrypted.toString('hex')
+    passwordHash: encrypted.toString('hex')
   }
 }
 
 export function decrypt(hash: Hash): string {
   const decipher = crypto.createDecipheriv(algorithm, process.env.PASSWORD_KEY, Buffer.from(hash.iv, 'hex'))
 
-  const decrpyted = Buffer.concat([decipher.update(Buffer.from(hash.password_hash, 'hex')), decipher.final()])
+  const decrpyted = Buffer.concat([decipher.update(Buffer.from(hash.passwordHash, 'hex')), decipher.final()])
 
   return decrpyted.toString()
 }

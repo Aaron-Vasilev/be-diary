@@ -1,5 +1,6 @@
 import Fastify from 'fastify'
 import postgres from "@fastify/postgres"
+import cors from '@fastify/cors'
 import { RegisterQuestionRoute} from './routes/question'
 import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 import { RegisterNoteRoute } from './routes/note'
@@ -12,7 +13,7 @@ const port = 8080
 server.register(postgres, {
   connectionString: 'postgres://postgres@localhost:5432/db_diary'
 })
-
+server.register(cors)
 JWTValidation(server, {})
 RegisterAuthRoute(server, {})
 RegisterQuestionRoute(server, {})
