@@ -57,18 +57,21 @@ const RegisterAuthRoute: FastifyPluginAsyncTypebox = async (fastify: FastifyInst
         } 
 
         const userQuery = await client.query(
-          "SELECT * FROM diary.user WHERE id=$1 LIMIT 1;", [rows[0].id]
+          `SELECT id, first_name AS "firstName", second_name AS "secondName"
+            FROM  diary.user WHERE id=$1 LIMIT 1;`, [rows[0].id]
         )
         
         const token = jwt.sign({
-          userId: userQuery.rows[0].userId,
-          firstName: userQuery.rows[0].firsName,
+          userId: userQuery.rows[0].id,
+          firstName: userQuery.rows[0].firstName,
           secondName: userQuery.rows[0].secondName,
         }, process.env.JWT_SECRET)
         
         response.token = `Bearer ${token}`
 
         return reply.send(response)
+      } catch (e) {
+        console.log('†', e)
       } finally {
         client.release()
       }

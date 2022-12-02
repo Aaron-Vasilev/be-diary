@@ -27,16 +27,19 @@ const RegisterQuestionRoute: FastifyPluginAsyncTypebox = async (fastify: Fastify
         },
       },
       onRequest: [
-        //@ts-ignore
+        // @ts-ignore
         server.jwtVerify
       ],
     },
     (request, reply) => {
+      const [year, month, day] = request.body.shownDate.split('-')
+
       server.pg.query(
-        "SELECT * FROM diary.question WHERE shown_date=$1 LIMIT 1;", [request.body.shownDate],
+        `SELECT id, text, shown_date AS "shownDate" FROM diary.question 
+          WHERE extract(month from shown_date)=$1 AND extract(day from shown_date)=$2 LIMIT 1;`, [month, day], 
         function onResult(err, result) {
           if (err)
-          return console.log('†',err)
+            return console.log('†',err)
           else {
             return reply.send(result.rows[0])
           }

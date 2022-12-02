@@ -1,5 +1,6 @@
 import { FastifyInstance, FastifyPluginOptions, FastifyReply, FastifyRequest } from 'fastify'
 import jwt from "@fastify/jwt"
+import { STATUS_ANAUTHORIZED } from '../../utils/const'
 
 export function JWTValidation(fastify: FastifyInstance, options: FastifyPluginOptions) {
   fastify.register(jwt, {
@@ -11,7 +12,7 @@ export function JWTValidation(fastify: FastifyInstance, options: FastifyPluginOp
       await request.jwtVerify()
     } catch (e) {
       console.log('† In JWTValidation', e)
-      reply.send("Invalid Token")
+      reply.status(STATUS_ANAUTHORIZED).send("Invalid Token")
     }
   })
 }
