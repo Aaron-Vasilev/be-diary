@@ -18,7 +18,7 @@ const RegisterQuestionRoute: FastifyPluginAsyncTypebox = async (fastify: Fastify
   const server = fastify.withTypeProvider<TypeBoxTypeProvider>()
   
   server.post<{ Body: QuestionShownDateReq , Reply: QuestionType }>(
-    '/question',
+    '/get-question',
     {
       schema: {
         body: Question,
