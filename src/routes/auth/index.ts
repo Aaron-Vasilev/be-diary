@@ -3,6 +3,7 @@ import { FastifyPluginAsyncTypebox, TypeBoxTypeProvider } from '@fastify/type-pr
 import { Static, Type } from '@sinclair/typebox'
 import jwt from "jsonwebtoken"
 import { decrypt, encrypt, Hash } from '../../utils/crypt'
+import { STATUS_ANAUTHORIZED, STATUS_NOT_ACCETABLE, STATUS_NOT_FOUND } from '../../utils/const'
 
 const Login = Type.Object({
   email: Type.String(),
@@ -27,7 +28,7 @@ type UserRegisterType = Static<typeof UserRegister>
 const RegisterAuthRoute: FastifyPluginAsyncTypebox = async (fastify: FastifyInstance, options: FastifyPluginOptions) => {
   const server = fastify.withTypeProvider<TypeBoxTypeProvider>()
 
-  server.post<{ Body: LoginType , Reply: LoginResponseType }>(
+  server.post<{ Body: LoginType , Reply: LoginResponseType | Number }>(
     '/login',
     {
       schema: {
@@ -49,11 +50,15 @@ const RegisterAuthRoute: FastifyPluginAsyncTypebox = async (fastify: FastifyInst
           "SELECT * FROM private.user_account WHERE email=$1 LIMIT 1;", [email]
         )
 
+        if (rows.length === 0) {
+          return reply.code(STATUS_NOT_FOUND).send(1)
+        }
+
         db_hash.iv = rows[0].iv
         db_hash.passwordHash = rows[0].password_hash
 
         if (decrypt(db_hash) !== password) {
-          return reply.code(401).send(1)
+          return reply.code(STATUS_ANAUTHORIZED).send(1)
         } 
 
         const userQuery = await client.query(
@@ -72,11 +77,10 @@ const RegisterAuthRoute: FastifyPluginAsyncTypebox = async (fastify: FastifyInst
         return reply.send(response)
       } catch (e) {
         console.log('†', e)
+        reply.status(STATUS_ANAUTHORIZED).send(1)
       } finally {
         client.release()
       }
-
-        
     }
   )
 
@@ -107,14 +111,13 @@ const RegisterAuthRoute: FastifyPluginAsyncTypebox = async (fastify: FastifyInst
         )
 
         return reply.send(0)
+      } catch (e) {
+        reply.code(STATUS_NOT_ACCETABLE).send(1)
       } finally {
         client.release()
       }
-
-        
     }
   )
-
 }
 
 export { 

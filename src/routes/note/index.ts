@@ -27,11 +27,15 @@ const RegisterNoteRoute: FastifyPluginAsyncTypebox = async (fastify: FastifyInst
           201: Note,
         },
       },
+      onRequest: [
+        // @ts-ignore
+        server.jwtVerify
+      ],
     },
     (request, reply) => {
       server.pg.query(
         `SELECT id AS "noteId", text, created_date AS "createdDate"  
-          FROM diary.note WHERE question_id=$1 AND user_id=$2;`, [request.body.questionId, request.body.userId],
+          FROM diary.note WHERE question_id=$1 AND user_id=$2;`, [request.body.questionId, request.user],
         function onResult(err, result) {
           if (err) {
             console.log('get-notes', err)
@@ -52,13 +56,18 @@ const RegisterNoteRoute: FastifyPluginAsyncTypebox = async (fastify: FastifyInst
           201: Note,
         },
       },
+      onRequest: [
+        // @ts-ignore
+        server.jwtVerify
+      ],
     },
     (request, reply) => {
+      console.log("🚀 ~ file: index.ts:65 ~ constRegisterNoteRoute:FastifyPluginAsyncTypebox= ~ request", request.user)
       server.pg.query(
         `INSERT into diary.note (user_id, text, created_date, question_id) VALUES
         	($1, $2, $3, $4) RETURNING id AS "noteId", text, question_id AS "questionId", 
           created_date AS "createdDate";`, 
-          [request.body.userId, request.body.text, request.body.createdDate, request.body.questionId],
+          [request.user, request.body.text, request.body.createdDate, request.body.questionId],
         function onResult(err, result) {
           if (err) {
             console.log('add-note', err)
