@@ -5,9 +5,10 @@
   "main": "index.ts",
   "scripts": {
     "dev": "nodemon --exec ts-node src/index.ts",
-    "start": "ts-node src/index.ts",
+    "start": "node ./dist/app.js",
     "test": "jest",
-    "build": "webpack"
+    "build": "webpack",
+    "postinstall": "npm run build"
   },
   "author": "Aaron Vasilev <oigen711@gmail.com>",
   "license": "ISC",
