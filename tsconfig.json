@@ -4,13 +4,13 @@
     "rootDir": ".",
     "module": "CommonJS",
     "target": "es2017",
-    "declaration": true,
+    "declaration": false,
     "noImplicitAny": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
   },
-  "include": [ "src/**/*", "src/routes/question", "src/routes/question", "db", "routes" ],
-  "exclude": [ "node_modules", "dist" ]
+  "include": [ "src/**/*" ],
+  "exclude": [ "node_modules", "bundle" ]
 }
