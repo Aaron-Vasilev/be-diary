@@ -7,11 +7,14 @@ import { RegisterNoteRoute } from './routes/note'
 import { RegisterAuthRoute } from './routes/auth'
 import { JWTValidation } from './controller/auth'
 
-const server = Fastify({ logger: true }).withTypeProvider<TypeBoxTypeProvider>()
-const port = 8080
+const server = Fastify({
+  logger: Boolean(process.env.NODE_ENV === "dev"),
+}).withTypeProvider<TypeBoxTypeProvider>()
+
+const port = +process.env.PORT || 8080
 
 server.register(postgres, {
-  connectionString: 'postgres://postgres@localhost:5432/db_diary'
+  connectionString: process.env.DATABASE_URL
 })
 server.register(cors)
 JWTValidation(server, {})
