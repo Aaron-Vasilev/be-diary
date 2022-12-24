@@ -62,12 +62,11 @@ const RegisterNoteRoute: FastifyPluginAsyncTypebox = async (fastify: FastifyInst
       ],
     },
     (request, reply) => {
-      console.log("🚀 ~ file: index.ts:65 ~ constRegisterNoteRoute:FastifyPluginAsyncTypebox= ~ request", request.user)
       server.pg.query(
         `INSERT into diary.note (user_id, text, created_date, question_id) VALUES
         	($1, $2, $3, $4) RETURNING id AS "noteId", text, question_id AS "questionId", 
           created_date AS "createdDate";`, 
-          [request.user, request.body.text, request.body.createdDate, request.body.questionId],
+          [+request.user, request.body.text, request.body.createdDate, request.body.questionId],
         function onResult(err, result) {
           if (err) {
             console.log('add-note', err)

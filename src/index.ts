@@ -7,14 +7,17 @@ import { RegisterNoteRoute } from './routes/note'
 import { RegisterAuthRoute } from './routes/auth'
 import { JWTValidation } from './controller/auth'
 
+const ENV = process.env.NODE_ENV
+const PORT = +process.env.PORT || 8080
+const HOST = process.env.HOST
+const DATABASE_URL = process.env.DATABASE_URL
+
 const server = Fastify({
-  logger: Boolean(process.env.NODE_ENV === 'dev'),
+  logger: Boolean(ENV === 'dev'),
 }).withTypeProvider<TypeBoxTypeProvider>()
 
-const port = +process.env.PORT || 8080
-const host = process.env.NODE_ENV === 'dev' ? 'localhost' : '0.0.0.0'
 server.register(postgres, {
-  connectionString: process.env.DATABASE_URL
+  connectionString: DATABASE_URL,
 })
 server.register(cors)
 JWTValidation(server, {})
@@ -22,7 +25,7 @@ RegisterAuthRoute(server, {})
 RegisterQuestionRoute(server, {})
 RegisterNoteRoute(server, {})
 
-server.listen({ port, host }, (err, address) => {
+server.listen({ port: PORT, host: HOST }, (err, address) => {
   if (err) {
     console.error(err)
     process.exit(1)
