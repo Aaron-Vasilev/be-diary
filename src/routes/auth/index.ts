@@ -68,6 +68,7 @@ const RegisterAuthRoute: FastifyPluginAsyncTypebox = async (fastify: FastifyInst
         
         const token = jwt.sign({
           userId: userQuery.rows[0].id,
+          role: rows[0].role,
           firstName: userQuery.rows[0].firstName,
           secondName: userQuery.rows[0].secondName,
         }, process.env.JWT_SECRET)

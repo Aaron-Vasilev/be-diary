@@ -75,10 +75,9 @@ const RegisterQuestionRoute: FastifyPluginAsyncTypebox = async (fastify: Fastify
         function onResult(err, result) {
           if (err) {
             console.log('†',err)
-            return reply.send(0)
-          } else {
-            console.log('† line 75 result', result)
             return reply.send(1)
+          } else {
+            return reply.send(0)
           }
         }
       )
