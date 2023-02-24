@@ -2,3 +2,4 @@
 /.env
 /dist
 ./__test__/http/test.http
+latest.dump

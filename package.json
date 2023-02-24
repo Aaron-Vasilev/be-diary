@@ -8,7 +8,9 @@
     "start": "node ./dist/app.js",
     "test": "jest",
     "build": "webpack",
-    "postinstall": "npm run build"
+    "postinstall": "npm run build",
+    "backup:download": "heroku pg:backups:download --app be-diary;",
+    "backup:restore": "pg_restore --verbose --clean --no-acl --no-owner -h localhost -d db_diary ./latest.dump"
   },
   "author": "Aaron Vasilev <oigen711@gmail.com>",
   "license": "ISC",
