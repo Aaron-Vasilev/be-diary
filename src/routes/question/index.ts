@@ -51,7 +51,7 @@ const RegisterQuestionRoute: FastifyPluginAsyncTypebox = async (fastify: Fastify
   )
 
   server.post<{ Body: QuestionAddReq, Reply: Number }>(
-    '/add-question',
+    '/update-question',
     {
       schema: {
         body: Question,

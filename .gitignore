@@ -3,3 +3,4 @@
 /dist
 ./__test__/http/test.http
 latest.dump
+package-lock.json
